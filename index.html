@@ -68,6 +68,7 @@
     a {
       color: inherit;
       text-decoration: none;
+      cursor: none;
     }
 
     button {
@@ -1394,7 +1395,7 @@ body:has(.mobile-nav.open) nav {
       max-width: 1100px;
       background: #0C0C0C;
       border-radius: 40px;
-      border: 2px solid #D7E2EA;
+      border: 2px solid #ffffff;
       padding: 16px;
       transition: transform 0.3s ease;
       position: relative;
@@ -1435,7 +1436,7 @@ body:has(.mobile-nav.open) nav {
       font-family: var(--font-display);
       font-size: clamp(3rem, 6vw, 5rem);
       font-weight: 900;
-      color: #D7E2EA;
+      color: #ffffff;
       line-height: 0.85;
       letter-spacing: -0.03em;
     }
@@ -1458,7 +1459,7 @@ body:has(.mobile-nav.open) nav {
       font-family: var(--font-display);
       font-size: clamp(1.2rem, 2.5vw, 2.4rem);
       font-weight: 500;
-      color: #D7E2EA;
+      color: #ffffff;
       letter-spacing: 0.04em;
       line-height: 1.1;
     }
@@ -1466,9 +1467,9 @@ body:has(.mobile-nav.open) nav {
     .live-project-btn {
       padding: 10px 24px;
       border-radius: 9999px;
-      border: 2px solid #D7E2EA;
+      border: 2px solid #ffffff;
       background: transparent;
-      color: #D7E2EA;
+      color: #ffffff;
       font-size: clamp(11px, 1vw, 14px);
       font-weight: 500;
       text-transform: uppercase;
@@ -1573,10 +1574,10 @@ body:has(.mobile-nav.open) nav {
       height: clamp(160px, 22vw, 340px);
     }
 
-    .project-img-wrapper.img-tall {
-      height: 100%;
-      min-height: clamp(320px, 40vw, 600px);
-    }
+.project-img-wrapper.img-tall {
+    min-height: clamp(320px, 40vw, 600px);
+    height: auto;
+}
 
     /* Project card scale animations on scroll */
     .project-stack-item[data-index="0"] {
@@ -2256,24 +2257,6 @@ footer {
       color: var(--accent);
     }
 
-    /* ═══════════════════════════════════════
-   TEXT ANIMATIONS
-═══════════════════════════════════════ */
-    .text-shimmer {
-      background: linear-gradient(90deg, var(--text) 0%, var(--accent) 50%, var(--text) 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: textShimmer 4s linear infinite;
-    }
-
-    @keyframes textShimmer {
-      to {
-        background-position: 200% center;
-      }
-    }
-
     .hover-lift {
       transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
     }
@@ -2281,98 +2264,6 @@ footer {
     .hover-lift:hover {
       transform: translateY(-6px);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    }
-
-    /* ═══════════════════════════════════════
-   3D TILT
-═══════════════════════════════════════ */
-    .tilt-3d {
-      transform-style: preserve-3d;
-      transition: transform 0.15s ease-out, box-shadow 0.4s var(--ease);
-      will-change: transform;
-    }
-
-    .tilt-3d .tilt-shine {
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.12) 0%, transparent 55%);
-      opacity: 0;
-      transition: opacity 0.35s;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .tilt-3d:hover .tilt-shine,
-    .tilt-3d.is-tilting .tilt-shine {
-      opacity: 1;
-    }
-
-    .project-card.tilt-3d {
-      transform-style: preserve-3d;
-      transition: border-color 0.4s, box-shadow 0.4s var(--ease), transform 0.15s ease-out;
-    }
-
-    /* ═══════════════════════════════════════
-   LOOP BAR (infinite marquee)
-═══════════════════════════════════════ */
-    .loop-bar {
-      position: relative;
-      z-index: 2;
-      overflow: hidden;
-      padding: 22px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
-    }
-
-    .loop-bar-track {
-      display: flex;
-      width: max-content;
-      animation: loopBarScroll 28s linear infinite;
-    }
-
-    .loop-bar:hover .loop-bar-track {
-      animation-play-state: paused;
-    }
-
-    @keyframes loopBarScroll {
-      from {
-        transform: translateX(0);
-      }
-
-      to {
-        transform: translateX(-50%);
-      }
-    }
-
-    .loop-bar-group {
-      display: flex;
-      align-items: center;
-      gap: clamp(32px, 5vw, 64px);
-      padding-right: clamp(32px, 5vw, 64px);
-      flex-shrink: 0;
-    }
-
-    .loop-bar-group span {
-      font-family: var(--font-display);
-      font-size: clamp(20px, 2.8vw, 36px);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-      transition: color 0.3s var(--ease);
-    }
-
-    .loop-bar-group span:hover {
-      color: var(--accent);
-    }
-
-    .loop-bar-group span::before {
-      content: '◆ ';
-      color: var(--accent);
-      font-size: 0.55em;
-      vertical-align: middle;
     }
 
     /* ═══════════════════════════════════════
@@ -3439,7 +3330,7 @@ footer {
                   <span class="project-name">Atelier Nova</span>
                 </div>
               </div>
-              <button class="live-project-btn">Live Project →</button>
+              <a href="https://www.figma.com/design/sEyZ0qC4UyO2Qu4kYAwKFf/Atelier-Nova-Website-Design?node-id=0-1&t=py9a3CY964erg1gH-1" class="live-project-btn" target="_blank" rel="noopener noreferrer"> Live Project → </a>
             </div>
             
             <!-- Card Bottom Row - Image Grid -->
@@ -3468,28 +3359,28 @@ footer {
             <!-- Card Top Row -->
             <div class="project-card-top">
               <div class="project-card-header">
-                <span class="project-number">03</span>
+                <span class="project-number">02</span>
                 <div class="project-meta">
                   <span class="project-category">Personal</span>
                   <span class="project-name">Lingo Fusion</span>
                 </div>
               </div>
-              <button class="live-project-btn">Live Project →</button>
+              <a href="https://www.figma.com/design/RASxs1z3xzdOw8llX5L5oa/Lingo-Fusion---Language-learning-app?node-id=1-1316&t=PHdvwAikm5Jg8ICb-1" class="live-project-btn" target="_blank" rel="noopener noreferrer"> Live Project → </a>
             </div>
             
             <!-- Card Bottom Row - Image Grid -->
             <div class="project-image-grid">
               <div class="project-col-left">
                 <div class="project-img-wrapper img-top">
-                  <img src="assets/lingo_fusion_mockup_1.png" alt="Lingo Fusion onboarding screen" loading="lazy">
+                  <img src="assets/lingo_fusion_mockup 1.png" alt="Lingo Fusion onboarding screen" loading="lazy">
                 </div>
                 <div class="project-img-wrapper img-bottom">
-                  <img src="assets/lingo_fusion_mockup_2.png" alt="Lingo Fusion welcome and progress screens" loading="lazy" style="object-position: 75% 30%; transform: scale(1.5);">
+                  <img src="assets/lingo_fusion_mockup 2.png" alt="Lingo Fusion welcome and progress screens" loading="lazy" style="object-position: 75% 30%; transform: scale(1.5);">
                 </div>
               </div>
               <div class="project-col-right">
                 <div class="project-img-wrapper img-tall">
-                  <img src="assets/lingo_fusion_mockup_2.png" alt="Lingo Fusion full app screen collection" loading="lazy">
+                  <img src="assets/lingo_fusion_mockup 2.png" alt="Lingo Fusion full app screen collection" loading="lazy">
                 </div>
               </div>
             </div>
@@ -3509,7 +3400,7 @@ footer {
                   <span class="project-name">Peak Global Partners</span>
                 </div>
               </div>
-              <button class="live-project-btn">Live Project →</button>
+<a href="https://www.figma.com/design/1sqTDcVuHXgukokNnK6M1H/PGP---Website-Design?node-id=0-1&t=Yi9c8JJDFGmBzIio-1" class="live-project-btn" target="_blank" rel="noopener noreferrer"> Live Project → </a>
             </div>
             
             <!-- Card Bottom Row - Image Grid -->
@@ -3519,7 +3410,7 @@ footer {
                   <img src="assets/PGP_mockup_1.png" alt="Peak Global Partners homepage hero" loading="lazy">
                 </div>
                 <div class="project-img-wrapper img-bottom">
-                  <img src="assets/PGP_mockup_1.png" alt="Peak Global Partners solutions overview" loading="lazy" style="object-position: 8% 25%; transform: scale(1.7);">
+                  <img src="assets/Thumbnail.png" alt="Peak Global Partners solutions overview" loading="lazy" style="object-position: 8% 25%; transform: scale(1);">
                 </div>
               </div>
               <div class="project-col-right">
@@ -3759,64 +3650,51 @@ footer {
       let mouseY = window.innerHeight / 2;
       let cursorX = mouseX;
       let cursorY = mouseY;
-      let lastMousePos = { x: mouseX, y: mouseY };
-      let previousAngle = 0;
-      let accumulatedRotation = 0;
-      let offsetX = '-50%';
-      let offsetY = '-50%';
-      let scale = 1;
-
-      const updateDirectionalCursor = (x, y) => {
-        const deltaX = x - lastMousePos.x;
-        const deltaY = y - lastMousePos.y;
-        const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-        if (speed > 0.1) {
-          const currentAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 90;
-          let angleDiff = currentAngle - previousAngle;
-          if (angleDiff > 180) angleDiff -= 360;
-          if (angleDiff < -180) angleDiff += 360;
-          accumulatedRotation += angleDiff;
-          previousAngle = currentAngle;
-
-          const normalizedAngle = ((currentAngle % 360) + 360) % 360;
-          if (normalizedAngle >= 315 || normalizedAngle < 45) {
-            offsetX = '-50%';
-            offsetY = '0%';
-          } else if (normalizedAngle >= 45 && normalizedAngle < 135) {
-            offsetX = '-100%';
-            offsetY = '-50%';
-          } else if (normalizedAngle >= 135 && normalizedAngle < 225) {
-            offsetX = '-50%';
-            offsetY = '-100%';
-          } else {
-            offsetX = '0%';
-            offsetY = '-50%';
-          }
-
-          scale = 0.95;
-          clearTimeout(directionalCursor._scaleReset);
-          directionalCursor._scaleReset = setTimeout(() => {
-            scale = 1;
-          }, 150);
-        }
-
-        lastMousePos = { x, y };
-      };
+      let lastX = mouseX;
+      let lastY = mouseY;
+      let currentRotation = 0;
+      let targetRotation = 0;
+      let currentScale = 1;
+      let hasMoved = false;
 
       document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        updateDirectionalCursor(mouseX, mouseY);
-      });
+        hasMoved = true;
+      }, { passive: true });
+
+      function shortestAngleDelta(from, to) {
+        let diff = (to - from) % 360;
+        if (diff > 180) diff -= 360;
+        if (diff < -180) diff += 360;
+        return diff;
+      }
 
       const animateDirectionalCursor = () => {
-        cursorX += (mouseX - cursorX) * 0.12;
-        cursorY += (mouseY - cursorY) * 0.12;
+        // Tighter follow so the cursor feels directly controlled, not floaty
+        cursorX += (mouseX - cursorX) * 0.35;
+        cursorY += (mouseY - cursorY) * 0.35;
+
+        const dx = mouseX - lastX;
+        const dy = mouseY - lastY;
+        const dist = Math.hypot(dx, dy);
+
+        if (hasMoved && dist > 0.5) {
+          targetRotation = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+          currentScale = 0.94;
+        } else {
+          currentScale += (1 - currentScale) * 0.15;
+        }
+
+        // Rotate along the shortest path continuously, no discrete snapping
+        currentRotation += shortestAngleDelta(currentRotation, targetRotation) * 0.25;
 
         directionalCursor.style.left = `${cursorX}px`;
         directionalCursor.style.top = `${cursorY}px`;
-        directionalCursor.style.transform = `translate(${offsetX}, ${offsetY}) rotate(${accumulatedRotation}deg) scale(${scale})`;
+        directionalCursor.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg) scale(${currentScale})`;
+
+        lastX = mouseX;
+        lastY = mouseY;
 
         requestAnimationFrame(animateDirectionalCursor);
       };
@@ -3984,11 +3862,12 @@ footer {
       el.addEventListener('mouseenter', () => scrambleElement(el));
     });
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
+    document.querySelectorAll('.nav-links a, .mob-link').forEach(link => {
       const label = link.textContent.trim();
       link.dataset.scramble = label;
       link.classList.add('scramble-text');
       link.addEventListener('mouseenter', () => scrambleElement(link));
+      link.addEventListener('touchstart', () => scrambleElement(link), { passive: true });
     });
 
     /* ═══════════════════════════════════════
@@ -4098,31 +3977,13 @@ footer {
 })();
 
     /* ═══════════════════════════════════════
-       PROJECT FILTER
-    ═══════════════════════════════════════ */
-    const filterTabs = document.querySelectorAll('.filter-tab');
-    const projectCards = document.querySelectorAll('.project-card');
-    filterTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        filterTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const filter = tab.dataset.filter;
-        projectCards.forEach(card => {
-          const show = filter === 'all' || card.dataset.category === filter;
-          card.style.display = show ? 'block' : 'none';
-          if (show) {
-            card.style.animation = 'fadeUp 0.5s var(--ease) forwards';
-          }
-        });
-      });
-    });
-
-    /* ═══════════════════════════════════════
        SMOOTH SCROLL
     ═══════════════════════════════════════ */
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
-        const target = document.querySelector(a.getAttribute('href'));
+        const href = a.getAttribute('href');
+        if (!href || href.length < 2) return; // skip bare "#" links
+        const target = document.querySelector(href);
         if (target) {
           e.preventDefault();
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });

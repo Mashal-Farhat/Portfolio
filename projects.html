@@ -43,19 +43,61 @@
       background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
+      cursor: none;
     }
 
-    a { color: inherit; text-decoration: none; }
+    button { cursor: none; }
 
-    .bg-canvas {
+    /* ═══════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════ */
+    #directional-cursor {
       position: fixed;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
+      top: 0;
+      left: 0;
+      width: 30px;
+      height: 32px;
       pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%) rotate(0deg) scale(1);
+      transform-origin: center center;
+      will-change: transform, left, top;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
+      mix-blend-mode: normal;
     }
 
-        /* NAVBAR - matching index.html */
+    #directional-cursor svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      #directional-cursor {
+        display: none;
+      }
+    }
+
+    /* ═══════════════════════════════════════
+   TEXT SCRAMBLE
+═══════════════════════════════════════ */
+    .scramble-text {
+      cursor: none;
+      display: inline-block;
+    }
+
+    .scramble-text.is-scrambling {
+      color: var(--accent);
+    }
+
+    a { color: inherit; text-decoration: none; cursor: none; }
+
+    @media (hover: none), (pointer: coarse) {
+      a, button { cursor: pointer; }
+    }
+
+    /* NAVBAR - matching index.html */
     nav {
       position: fixed;
       top: 0;
@@ -231,6 +273,46 @@ body:has(.mobile-nav.open) nav {
     background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(16px) !important;
   }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-cta {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .page-hero {
+    padding: calc(var(--nav-h) + 40px) clamp(20px, 6vw, 40px) 32px;
+  }
+
+  .page-heading {
+    font-size: clamp(40px, 12vw, 64px);
+  }
+
+  .page-subtext {
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+
+  .filter-tabs {
+    margin-bottom: 32px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-tab {
+    padding: 7px 16px;
+    font-size: 12px;
+  }
 }
     .page-hero {
       position: relative;
@@ -325,7 +407,8 @@ body:has(.mobile-nav.open) nav {
       overflow: hidden;
       background: var(--surface);
       border: 1px solid rgba(0, 0, 0, 0.08);
-      transition: transform 0.4s var(--ease), box-shadow 0.4s, opacity 0.4s;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+      display: block;
     }
 
     .project-card:hover {
@@ -338,42 +421,20 @@ body:has(.mobile-nav.open) nav {
     }
 
     .project-image {
-      height: 200px;
       position: relative;
       overflow: hidden;
+      background: #f2f2f2;
+      line-height: 0;
     }
 
-    .project-image-bg {
-      position: absolute;
-      inset: 0;
+    .project-image img {
+      width: 100%;
+      height: auto;
+      display: block;
       transition: transform 0.6s var(--ease);
     }
 
-    .project-card:hover .project-image-bg { transform: scale(1.08); }
-
-    .project-image-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 30%, rgba(0, 0, 0, 0.05) 0%, transparent 55%);
-    }
-
-    .p-grad-1 { background: linear-gradient(145deg, #f5f5f5, #e8e8e8, #f0f0f0); }
-    .p-grad-2 { background: linear-gradient(145deg, #f0f0f0, #eaeaea, #f5f5f5); }
-    .p-grad-3 { background: linear-gradient(145deg, #ededed, #e5e5e5, #f0f0f0); }
-    .p-grad-4 { background: linear-gradient(145deg, #f2f2f2, #e8e8e8, #efefef); }
-    .p-grad-5 { background: linear-gradient(145deg, #efefef, #e6e6e6, #f2f2f2); }
-    .p-grad-6 { background: linear-gradient(145deg, #f3f3f3, #e9e9e9, #f0f0f0); }
-
-    .p-grad-icon {
-      font-size: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      opacity: 0.85;
-      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.08));
-    }
+    .project-card:hover .project-image img { transform: scale(1.05); }
 
     .project-tag-type {
       position: absolute;
@@ -393,16 +454,42 @@ body:has(.mobile-nav.open) nav {
     .project-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.72);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
+      padding: 20px;
+      text-align: center;
       opacity: 0;
-      transition: opacity 0.4s;
+      transform: translateY(6px);
+      transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
     }
 
-    .project-card:hover .project-overlay { opacity: 1; }
+    .project-card:hover .project-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .project-type-badge {
+      padding: 4px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 100px;
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .project-desc-text {
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 230px;
+    }
 
     .project-info { padding: 20px; }
 
@@ -576,6 +663,28 @@ body:has(.mobile-nav.open) nav {
 
 <body>
 
+  <!-- CURSOR -->
+  <div id="directional-cursor" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="54" viewBox="0 0 50 54" fill="none">
+      <g filter="url(#cursorShadow)">
+        <path d="M42.6817 41.1495L27.5103 6.79925C26.7269 5.02557 24.2082 5.02558 23.3927 6.79925L7.59814 41.1495C6.75833 42.9759 8.52712 44.8902 10.4125 44.1954L24.3757 39.0496C24.8829 38.8627 25.4385 38.8627 25.9422 39.0496L39.8121 44.1954C41.6849 44.8902 43.4884 42.9759 42.6817 41.1495Z" fill="black"/>
+        <path d="M43.7146 40.6933L28.5431 6.34306C27.3556 3.65428 23.5772 3.69516 22.3668 6.32755L6.57226 40.6778C5.3134 43.4156 7.97238 46.298 10.803 45.2549L24.7662 40.109C25.0221 40.0147 25.2999 40.0156 25.5494 40.1082L39.4193 45.254C42.2261 46.2953 44.9254 43.4347 43.7146 40.6933Z" stroke="white" stroke-width="2.25825"/>
+      </g>
+      <defs>
+        <filter id="cursorShadow" x="0.602397" y="0.952444" width="49.0584" height="52.428" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+          <feOffset dy="2.25825"/>
+          <feGaussianBlur stdDeviation="2.25825"/>
+          <feComposite in2="hardAlpha" operator="out"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0"/>
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_91_7928"/>
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_91_7928" result="shape"/>
+        </filter>
+      </defs>
+    </svg>
+  </div>
+
     <nav id="navbar">
     <a href="index.html#hero" class="nav-logo" aria-label="Mashal Farhat home">
       <img src="logo.svg" alt="Mashal Farhat logo">
@@ -614,167 +723,194 @@ body:has(.mobile-nav.open) nav {
       <button class="filter-tab" data-filter="web">Web</button>
       <button class="filter-tab" data-filter="app">App</button>
       <button class="filter-tab" data-filter="game">Games</button>
+      <button class="filter-tab" data-filter="social">Social</button>
     </div>
   </header>
 
   <main class="projects-wrap">
+    <!-- Each card is a link. Replace href="#project-slug" below with the real
+         live site / case study URL for that project (add target="_blank" rel="noopener" if it should open in a new tab). -->
     <div class="projects-grid" id="projectsGrid">
 
-      <article class="project-card" data-category="web">
+      <a href="https://www.figma.com/design/sEyZ0qC4UyO2Qu4kYAwKFf/Atelier-Nova-Website-Design?node-id=0-1&t=WSK0AuBBTaW07NZv-1" class="project-card" data-category="web">
         <div class="project-image">
-          <img src="assets/Art_mockup_1.png" alt="Atelier Nova art gallery website" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" loading="lazy">
+          <img src="assets/Art_mockup_1.png" alt="Atelier Nova art gallery website" loading="lazy" decoding="async">
           <div class="project-tag-type">Web</div>
-          <div class="project-overlay"><span class="tech-pill">Figma</span><span class="tech-pill">HTML/CSS</span></div>
+          <div class="project-overlay">
+            <span class="project-type-badge">E-Commerce</span>
+            <p class="project-desc-text">A storefront to buy original canvas paintings, clay pieces and calligraphy art online.</p>
+          </div>
         </div>
         <div class="project-info">
           <div class="project-name">Atelier Nova</div>
           <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">UI Design</span><span class="tech-pill">E-Commerce</span></div>
         </div>
-      </article>
+      </a>
 
-      <article class="project-card" data-category="app">
+      <a href="https://www.figma.com/design/RASxs1z3xzdOw8llX5L5oa/Lingo-Fusion---Language-learning-app?node-id=0-1&t=9SsNCsE7pnZYADE4-1" class="project-card" data-category="app">
         <div class="project-image">
-          <img src="assets/lingo fusion mockup 1.png" alt="Lingo Fusion language learning app" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;object-position:50% 20%;" loading="lazy">
+          <img src="assets/lingo_fusion_mockup 1.png" alt="Lingo Fusion language learning app" loading="lazy" decoding="async">
           <div class="project-tag-type">App</div>
-          <div class="project-overlay"><span class="tech-pill">Figma</span><span class="tech-pill">Mobile UI</span></div>
+          <div class="project-overlay">
+            <span class="project-type-badge">EdTech</span>
+            <p class="project-desc-text">Language learning app connecting users with native speakers to practice and speak fluently.</p>
+          </div>
         </div>
         <div class="project-info">
           <div class="project-name">Lingo Fusion</div>
           <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Mobile UI</span><span class="tech-pill">UX Flows</span></div>
         </div>
-      </article>
+      </a>
 
-      <article class="project-card" data-category="app">
+      <a href="https://www.figma.com/design/vKwKznwRqSYduwAYVzgKP3/Buzzly---Daily-Notes--Reminder-App?node-id=0-1&t=nyHrgVJVfeL59Wcj-1" class="project-card" data-category="app">
         <div class="project-image">
-          <img src="assets/buzzly mockup 1.png" alt="Buzzly daily note buddy app" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;object-position:50% 30%;" loading="lazy">
+          <img src="assets/buzzly mockup 1.png" alt="Buzzly daily note buddy app" loading="lazy" decoding="async">
           <div class="project-tag-type">App</div>
-          <div class="project-overlay"><span class="tech-pill">Figma</span><span class="tech-pill">Mobile UI</span></div>
+          <div class="project-overlay">
+            <span class="project-type-badge">Productivity</span>
+            <p class="project-desc-text">Daily notes and smart reminders to help users stay organized and on top of their day.</p>
+          </div>
         </div>
         <div class="project-info">
           <div class="project-name">Buzzly</div>
           <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Mobile UI</span><span class="tech-pill">Task Management</span></div>
         </div>
-      </article>
+      </a>
 
-      <article class="project-card" data-category="game">
+      <a href="https://www.figma.com/design/0tMOIaVtMqVcj6U7gldaY4/Budget-Buddy?node-id=0-1&t=rYdGHUifCXpBu0P2-1" class="project-card" data-category="app">
         <div class="project-image">
-          <div class="project-image-bg p-grad-3"><div class="p-grad-icon">⚔️</div></div>
-          <div class="project-tag-type">Game</div>
-          <div class="project-overlay"><span class="tech-pill">Photoshop</span><span class="tech-pill">Unity</span></div>
+          <img src="assets/budget-buddy.png" alt="Budget Buddy" loading="lazy" decoding="async">
+          <div class="project-tag-type">App</div>
+          <div class="project-overlay">
+            <span class="project-type-badge">FinTech</span>
+            <p class="project-desc-text">Finance app for tracking spending, savings and budgets so users can build better money habits.</p>
+          </div>
         </div>
         <div class="project-info">
-          <div class="project-name">RPG Combat HUD</div>
-          <div class="project-tech"><span class="tech-pill">Photoshop</span><span class="tech-pill">Unity UI</span><span class="tech-pill">After Effects</span></div>
+          <div class="project-name">Budget Buddy</div>
+          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Mobile UI</span><span class="tech-pill">FinTech</span></div>
         </div>
-      </article>
+      </a>
 
-      <article class="project-card" data-category="web">
+      <a href="https://www.figma.com/design/1sqTDcVuHXgukokNnK6M1H/PGP---Website-Design?node-id=0-1&t=Yi9c8JJDFGmBzIio-1" class="project-card" data-category="web">
         <div class="project-image">
-          <img src="assets/PGP_mockup_2.png" alt="Peak Global Partners website" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" loading="lazy">
+          <img src="assets/PGP_mockup_2.png" alt="Peak Global Partners website" loading="lazy" decoding="async">
           <div class="project-tag-type">Web</div>
-          <div class="project-overlay"><span class="tech-pill">Figma</span><span class="tech-pill">Webflow</span></div>
+          <div class="project-overlay">
+            <span class="project-type-badge">B2B / Corporate</span>
+            <p class="project-desc-text">Corporate site for infrastructure, technology and capital access solutions across energy, water and more.</p>
+          </div>
         </div>
         <div class="project-info">
           <div class="project-name">Peak Global Partners</div>
           <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Corporate Site</span><span class="tech-pill">Webflow</span></div>
         </div>
-      </article>
+      </a>
 
-      <article class="project-card" data-category="app">
+      <a href="https://www.figma.com/design/q2z7Y77cHZKlq1ajhMIo66/Hello-Faisalabad?node-id=0-1&t=aLsz91W2znwjiujf-1" class="project-card" data-category="web">
         <div class="project-image">
-          <div class="project-image-bg p-grad-5"><div class="p-grad-icon">🍕</div></div>
-          <div class="project-tag-type">App</div>
-          <div class="project-overlay"><span class="tech-pill">Figma</span><span class="tech-pill">React Native</span></div>
-        </div>
-        <div class="project-info">
-          <div class="project-name">Food Delivery App UI</div>
-          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Lottie</span><span class="tech-pill">React Native</span></div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="game">
-        <div class="project-image">
-          <div class="project-image-bg p-grad-6"><div class="p-grad-icon">🌿</div></div>
-          <div class="project-tag-type">Game</div>
-          <div class="project-overlay"><span class="tech-pill">Illustrator</span><span class="tech-pill">Unity</span></div>
-        </div>
-        <div class="project-info">
-          <div class="project-name">Survival Game Interface</div>
-          <div class="project-tech"><span class="tech-pill">Illustrator</span><span class="tech-pill">Spine 2D</span><span class="tech-pill">Unity</span></div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="web">
-        <div class="project-image">
-          <div class="project-image-bg p-grad-2"><div class="p-grad-icon">🏠</div></div>
+          <img src="assets/HF.png" alt="Hello Faisalabad" loading="lazy" decoding="async">
           <div class="project-tag-type">Web</div>
-          <div class="project-overlay"><span class="tech-pill">Figma</span><span class="tech-pill">React</span></div>
+          <div class="project-overlay">
+            <span class="project-type-badge">B2G / SaaS Dashboard</span>
+            <p class="project-desc-text">WhatsApp-style chatbot dashboard for Faisalabad city queries, complaints and activity tracking.</p>
+          </div>
         </div>
         <div class="project-info">
-          <div class="project-name">Real Estate Listing Platform</div>
-          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">React</span><span class="tech-pill">Mapbox</span></div>
+          <div class="project-name">Hello Faisalabad</div>
+          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Web Dashboard</span><span class="tech-pill">Chatbot UI</span></div>
         </div>
-      </article>
+      </a>
 
-      <article class="project-card" data-category="app">
+      <a href="https://www.figma.com/design/IJ4bw9SKMuxmjXI8I9eOBW/Raya-Smart-Living?node-id=1-1029&t=PAfqgqRwd3uDxlFb-1" class="project-card" data-category="app">
         <div class="project-image">
-          <div class="project-image-bg p-grad-3"><div class="p-grad-icon">💊</div></div>
+          <img src="assets/raya-smart-living.png" alt="Raya Smart Living" loading="lazy" decoding="async">
           <div class="project-tag-type">App</div>
-          <div class="project-overlay"><span class="tech-pill">Figma</span><span class="tech-pill">Flutter</span></div>
+          <div class="project-overlay">
+            <span class="project-type-badge">IoT / Smart Home</span>
+            <p class="project-desc-text">Smart living app to control an entire apartment — lights, AC, fridge, doors and more from one place.</p>
+          </div>
         </div>
         <div class="project-info">
-          <div class="project-name">MedCare Health App</div>
-          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">ProtoPie</span><span class="tech-pill">Flutter</span></div>
+          <div class="project-name">Raya Smart Living</div>
+          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Mobile UI</span><span class="tech-pill">IoT</span></div>
         </div>
-      </article>
+      </a>
 
-      <article class="project-card" data-category="game">
+      <a href="https://www.figma.com/design/Kjm53fbfwCRIhEvQrgE63b/POOL-MERGE?node-id=0-1&t=Ibb3A0vIdpJpaLg2-1" class="project-card" data-category="game">
         <div class="project-image">
-          <div class="project-image-bg p-grad-1"><div class="p-grad-icon">♟️</div></div>
+          <img src="assets/pool_merge.png" alt="Pool Merge.io game UI" loading="lazy" decoding="async">
           <div class="project-tag-type">Game</div>
-          <div class="project-overlay"><span class="tech-pill">Photoshop</span><span class="tech-pill">Unity</span></div>
+          <div class="project-overlay">
+            <span class="project-type-badge">Casual / Strategy</span>
+            <p class="project-desc-text">Touch-friendly layouts and engaging UI for a merging/strategy game on PC & Mobile.</p>
+          </div>
         </div>
         <div class="project-info">
-          <div class="project-name">Strategy Game Battle UI</div>
-          <div class="project-tech"><span class="tech-pill">Photoshop</span><span class="tech-pill">Unity UI</span><span class="tech-pill">Spine 2D</span></div>
+          <div class="project-name">Pool Merge.io</div>
+          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">UI/UX</span><span class="tech-pill">Game Design</span></div>
         </div>
-      </article>
+      </a>
 
-      <article class="project-card" data-category="web">
+      <a href="https://www.figma.com/design/dAy8MHEPqkNBKGodUjvIH6/City-Cruise?node-id=0-1&t=GpEm9pvZlzWLULPh-1" class="project-card" data-category="game">
         <div class="project-image">
-          <div class="project-image-bg p-grad-5"><div class="p-grad-icon">✨</div></div>
-          <div class="project-tag-type">Web</div>
-          <div class="project-overlay"><span class="tech-pill">Figma</span><span class="tech-pill">Framer</span></div>
-        </div>
-        <div class="project-info">
-          <div class="project-name">Creative Agency Website</div>
-          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Framer</span><span class="tech-pill">Webflow</span></div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="app">
-        <div class="project-image">
-          <div class="project-image-bg p-grad-4"><div class="p-grad-icon">₿</div></div>
-          <div class="project-tag-type">App</div>
-          <div class="project-overlay"><span class="tech-pill">Figma</span><span class="tech-pill">React Native</span></div>
-        </div>
-        <div class="project-info">
-          <div class="project-name">Crypto Wallet App</div>
-          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Lottie</span><span class="tech-pill">React Native</span></div>
-        </div>
-      </article>
-
-      <article class="project-card" data-category="game">
-        <div class="project-image">
-          <div class="project-image-bg p-grad-6"><div class="p-grad-icon">🎯</div></div>
+          <img src="assets/city_cruise.png" alt="City Cruise racing game UI" loading="lazy" decoding="async">
           <div class="project-tag-type">Game</div>
-          <div class="project-overlay"><span class="tech-pill">Illustrator</span><span class="tech-pill">Unity</span></div>
+          <div class="project-overlay">
+            <span class="project-type-badge">Casual / Racing</span>
+            <p class="project-desc-text">Immersive HUDs and navigation for a casual racing game on PC & Mobile.</p>
+          </div>
         </div>
         <div class="project-info">
-          <div class="project-name">Arcade Shooter HUD</div>
-          <div class="project-tech"><span class="tech-pill">Illustrator</span><span class="tech-pill">After Effects</span><span class="tech-pill">Unity</span></div>
+          <div class="project-name">City Cruise</div>
+          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">UI/UX</span><span class="tech-pill">Game Design</span></div>
         </div>
-      </article>
+      </a>
+
+      <a href="https://www.figma.com/design/TAfgKyWPNbXsp6MYQRlMg4/Car-Detailing-UI?node-id=0-1&t=MDybpZGrfdVrldlO-1" class="project-card" data-category="game">
+        <div class="project-image">
+          <img src="assets/car_detail_master.png" alt="Car Detailing Master game UI" loading="lazy" decoding="async">
+          <div class="project-tag-type">Game</div>
+          <div class="project-overlay">
+            <span class="project-type-badge">Casual / Simulation</span>
+            <p class="project-desc-text">Satisfying car wash and detailing simulation UI built for a mobile casual audience.</p>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-name">Car Detailing Master</div>
+          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">UI/UX</span><span class="tech-pill">Game Design</span></div>
+        </div>
+      </a>
+
+      <a href="https://www.figma.com/design/fcs9VjpFNyPl5Nj4E3FqUB/Meethai-Mania?node-id=0-1&t=Nv0MFOnlYhqyggtW-1" class="project-card" data-category="game">
+        <div class="project-image">
+          <img src="assets/meethai_mania.png" alt="Meethai Mania hyper casual game UI" loading="lazy" decoding="async">
+          <div class="project-tag-type">App / Game</div>
+          <div class="project-overlay">
+            <span class="project-type-badge">Hyper Casual</span>
+            <p class="project-desc-text">Fun, colorful UI for a hyper casual sweets-matching game built for quick, snackable play sessions.</p>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-name">Meethai Mania</div>
+          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">UI/UX</span><span class="tech-pill">Hyper Casual</span></div>
+        </div>
+      </a>
+
+      <a href="https://www.figma.com/design/RIy9LlKWAxEsuo84Erx6Df/Social-Media-Posts?node-id=0-1&t=1Yiw55CwlDTvkKTg-1" class="project-card" data-category="social">
+        <div class="project-image">
+          <img src="assets/social_media_posts.png" alt="Social media post designs" loading="lazy" decoding="async">
+          <div class="project-tag-type">Social</div>
+          <div class="project-overlay">
+            <span class="project-type-badge">Content Design</span>
+            <p class="project-desc-text">A collection of social media post designs — brand graphics, promos and content templates.</p>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-name">Social Media Posts</div>
+          <div class="project-tech"><span class="tech-pill">Figma</span><span class="tech-pill">Graphic Design</span><span class="tech-pill">Social Media</span></div>
+        </div>
+      </a>
 
     </div>
   </main>
@@ -848,6 +984,103 @@ body:has(.mobile-nav.open) nav {
     window.scrollTo(0, 0);
     window.addEventListener('pageshow', (e) => {
       if (e.persisted) window.scrollTo(0, 0);
+    });
+
+    /* ═══════════════════════════════════════
+       CURSOR
+    ═══════════════════════════════════════ */
+    const directionalCursor = document.getElementById('directional-cursor');
+
+    if (directionalCursor) {
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let cursorX = mouseX;
+      let cursorY = mouseY;
+      let lastX = mouseX;
+      let lastY = mouseY;
+      let currentRotation = 0;
+      let targetRotation = 0;
+      let currentScale = 1;
+      let hasMoved = false;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        hasMoved = true;
+      }, { passive: true });
+
+      function shortestAngleDelta(from, to) {
+        let diff = (to - from) % 360;
+        if (diff > 180) diff -= 360;
+        if (diff < -180) diff += 360;
+        return diff;
+      }
+
+      const animateDirectionalCursor = () => {
+        cursorX += (mouseX - cursorX) * 0.35;
+        cursorY += (mouseY - cursorY) * 0.35;
+
+        const dx = mouseX - lastX;
+        const dy = mouseY - lastY;
+        const dist = Math.hypot(dx, dy);
+
+        if (hasMoved && dist > 0.5) {
+          targetRotation = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+          currentScale = 0.94;
+        } else {
+          currentScale += (1 - currentScale) * 0.15;
+        }
+
+        currentRotation += shortestAngleDelta(currentRotation, targetRotation) * 0.25;
+
+        directionalCursor.style.left = `${cursorX}px`;
+        directionalCursor.style.top = `${cursorY}px`;
+        directionalCursor.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg) scale(${currentScale})`;
+
+        lastX = mouseX;
+        lastY = mouseY;
+
+        requestAnimationFrame(animateDirectionalCursor);
+      };
+
+      animateDirectionalCursor();
+    }
+
+    /* ═══════════════════════════════════════
+       SCRAMBLE TEXT
+    ═══════════════════════════════════════ */
+    const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*';
+    const scrambleTimers = new WeakMap();
+
+    function scrambleElement(el) {
+      const final = el.dataset.scramble || el.textContent;
+      if (!final) return;
+      clearInterval(scrambleTimers.get(el));
+      el.classList.add('is-scrambling');
+      let frame = 0;
+      const total = 20;
+      const timer = setInterval(() => {
+        el.textContent = final.split('').map((char, i) => {
+          if (char === ' ') return ' ';
+          if (i < (frame / total) * final.length) return final[i];
+          return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        }).join('');
+        frame++;
+        if (frame > total) {
+          clearInterval(timer);
+          el.textContent = final;
+          el.classList.remove('is-scrambling');
+        }
+      }, 50);
+      scrambleTimers.set(el, timer);
+    }
+
+    document.querySelectorAll('.nav-links a, .mob-link').forEach(link => {
+      const label = link.textContent.trim();
+      link.dataset.scramble = label;
+      link.classList.add('scramble-text');
+      link.addEventListener('mouseenter', () => scrambleElement(link));
+      link.addEventListener('touchstart', () => scrambleElement(link), { passive: true });
     });
 
     const filterTabs = document.querySelectorAll('.filter-tab');
